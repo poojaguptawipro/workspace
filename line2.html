@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <style>
+        .axis path {
+            fill: none;
+            stroke: #777;
+            shape-rendering: crispEdges;
+        }
+        .axis text {
+            font-family: Lato;
+            font-size: 13px;
+        }
+        h5{
+          display: inline;
+        }
+    </style>
+
+</head>
+
+<body>
+  <svg width="50" height="50">
+    <rect x="10" y="10" width="50" height="50" fill="blue" />
+    <h5>   ARRESTED</h5>
+  </svg>
+
+  <svg width="50" height="50">
+    <rect x="20" y="20" width="50" height="50" fill="green" />
+    <h5>  NOT ARRESTED</h5>
+  </svg>
+
+            <svg id="visualisation" width="1000" height="500"></svg>
+            <script src="d3.js" charset="utf-8"></script>
+            <script>
+
+                function InitChart() {
+                    var data = [{"year":"2001","value":7150},{"year":"2002","value":7340},{"year":"2003","value":6909},{"year":"2004","value":7004},{"year":"2005","value":6631},
+                    {"year":"2006","value":6288},{"year":"2007","value":6550},{"year":"2008","value":5316},{"year":"2009","value":5700},{"year":"2010","value":5051},
+                    {"year":"2011","value":5185},{"year":"2012","value":4792},{"year":"2013","value":4460},{"year":"2014","value":4495},{"year":"2015","value":4038},{"year":"2016","value":944}];
+
+                    var data2 = [{"year":"2001","value":24233},{"year":"2002","value":24181},{"year":"2003","value":22568},{"year":"2004","value":21846},{"year":"2005","value":20435},
+                    {"year":"2006","value":19657},{"year":"2007","value":19764},{"year":"2008","value":20131},{"year":"2009","value":17161},{"year":"2010","value":16484},
+                    {"year":"2011","value":15225},{"year":"2012","value":15105},{"year":"2013","value":13511},{"year":"2014","value":12400},{"year":"2015","value":12989},{"year":"2016","value":4087}];
+
+                    var vis = d3.select("#visualisation"),
+                        WIDTH = 1000,
+                        HEIGHT = 500,
+                        MARGINS = {
+                            top: 20,
+                            right: 20,
+                            bottom: 20,
+                            left: 50
+                        },
+                        xScale = d3.scale.linear().range([MARGINS.left, WIDTH - MARGINS.right]).domain([2000, 2018]),
+                        yScale = d3.scale.linear().range([HEIGHT - MARGINS.top, MARGINS.bottom]).domain([900,26000]),
+                        xAxis = d3.svg.axis()
+                        .scale(xScale),
+                        yAxis = d3.svg.axis()
+                        .scale(yScale)
+                        .orient("left");
+
+                    vis.append("svg:g")
+                        .attr("class", "x axis")
+                        .attr("transform", "translate(0," + (HEIGHT - MARGINS.bottom) + ")")
+                        .call(xAxis);
+                    vis.append("svg:g")
+                        .attr("class", "y axis")
+                        .attr("transform", "translate(" + (MARGINS.left) + ",0)")
+                        .call(yAxis);
+                    var lineGen = d3.svg.line()
+                        .x(function(d) {
+                            return xScale(d.year);
+                        })
+                        .y(function(d) {
+                            return yScale(d.value);
+                        })
+                        .interpolate("basis");
+                    vis.append('svg:path')
+                        .attr('d', lineGen(data))
+                        .attr('stroke', 'green')
+                        .attr('stroke-width', 2)
+                        .attr('fill', 'none');
+                    vis.append('svg:path')
+                        .attr('d', lineGen(data2))
+                        .attr('stroke', 'blue')
+                        .attr('stroke-width', 2)
+                        .attr('fill', 'none');
+                }
+                InitChart();
+            </script>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
